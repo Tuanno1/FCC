@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Drum Machine</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+<div id="drum-machine">
+  <div id="pad-bank">
+    <button class="drum-pad">Q
+      <audio class="clip" id="Q" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"></audio>
+    </button>
+    <button class="drum-pad">W
+      <audio class="clip" id="W" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"></audio>
+    </button>
+    <button class="drum-pad">E
+      <audio class="clip" id="E" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"></audio>
+    </button>
+    <button class="drum-pad">A
+      <audio class="clip" id="A" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"></audio>
+    </button>
+    <button class="drum-pad">S
+      <audio class="clip" id="S" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"></audio>
+    </button>
+    <button class="drum-pad">D
+      <audio class="clip" id="D" src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"></audio>
+    </button>
+    <button class="drum-pad">Z
+      <audio class="clip" id="Z" src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3"></audio>
+    </button>
+    <button class="drum-pad">X
+      <audio class="clip" id="X" src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3"></audio>
+    </button>
+    <button class="drum-pad">C
+      <audio class="clip" id="C" src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"></audio>
+    </button>
+  </div>
+  <p id="display"></p>
+</div>
+  </body>
+  <script src="script.js"></script>
+</html>
+
+/* 1. XÓA BỎ KHOẢNG TRẮNG MẶC ĐỊNH CỦA TRÌNH DUYỆT */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. ĐỊNH DẠNG TOÀN BỘ MÀN HÌNH (BODY) */
+body {
+  background-color: #282c34; /* Màu nền xám đen bao phủ bên ngoài */
+  display: flex;
+  justify-content: center; /* Đẩy cỗ máy ra giữa màn hình theo chiều ngang */
+  align-items: center;     /* Đẩy cỗ máy ra giữa màn hình theo chiều dọc */
+  height: 100vh;           /* Chiều cao bằng 100% màn hình hiển thị */
+  font-family: sans-serif;
+}
+
+/* 3. KHUNG CHỨA BÊN NGOÀI CỦA CỖ MÁY (#drum-machine) */
+#drum-machine {
+  background-color: #3f3e5c; /* Màu nền tím than y hệt ảnh của Ngài */
+  padding: 30px;             /* Tạo khoảng không gian bên trong (thụt lề) */
+  border-radius: 10px;       /* Bo tròn 4 góc của hộp chứa */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4); /* Đổ bóng cho hộp nổi lên */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 4. KHU VỰC CHỨA 9 NÚT BẤM (#pad-bank) - DÙNG GRID ĐỂ CHIA LƯỚI 3x3 */
+#pad-bank {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tuyệt kỹ: Chia thành 3 cột bằng nhau */
+  gap: 15px;                             /* Khoảng cách giữa các nút là 15px */
+  margin-bottom: 20px;                   /* Đẩy màn hình hiển thị (#display) xuống dưới một chút */
+}
+
+/* 5. ĐỊNH DẠNG TỪNG NÚT BẤM (.drum-pad) */
+.drum-pad {
+  width: 80px;
+  height: 80px;             /* Rộng và cao bằng nhau tạo hình vuông */
+  background-color: #6b6b6b; /* Màu xám tro của nút giống trong ảnh */
+  color: white;             /* Chữ màu trắng */
+  font-size: 22px;
+  border: none;             /* Xóa cái viền xấu xí mặc định của button */
+  border-radius: 8px;       /* Bo góc nút bấm */
+  cursor: pointer;          /* Biến con trỏ chuột thành hình bàn tay khi rà vào */
+  display: flex;
+  justify-content: center;  /* Căn chữ ra giữa theo chiều ngang */
+  align-items: center;      /* Căn chữ ra giữa theo chiều dọc */
+  transition: all 0.1s ease;/* Làm mượt hiệu ứng đổi màu khi bấm */
+}
+
+/* 6. HIỆU
+
+const drumPads = document.querySelectorAll(".drum-pad");
+const display = document.getElementById("display");
+
+// 1. TẠO TỪ ĐIỂN TÊN ÂM THANH (Mỗi tên phải là duy nhất)
+const soundNames = {
+  "Q": "Heater 1",
+  "W": "Heater 2",
+  "E": "Heater 3",
+  "A": "Heater 4",
+  "S": "Clap",
+  "D": "Open-HH",
+  "Z": "Kick-n-Hat",
+  "X": "Kick",
+  "C": "Closed-HH"
+};
+
+// 2. KHI DÙNG CHUỘT BẤM (CLICK)
+drumPads.forEach((pad) => {
+  pad.addEventListener("click", (event) => {
+    const currentPad = event.target.closest(".drum-pad");
+    const audio = currentPad.querySelector(".clip");
+    
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+      
+      // Bắn tên âm thanh lên màn hình hiển thị
+      display.innerText = soundNames[audio.id];
+    }
+  });
+});
+
+// 3. KHI DÙNG BÀN PHÍM GÕ (KEYDOWN)
+document.addEventListener("keydown", (event) => {
+  const key = event.key.toUpperCase();
+  const audio = document.getElementById(key);
+
+  if (audio) {
+    audio.currentTime = 0;
+    audio.play();
+    
+    // Bắn tên âm thanh lên màn hình hiển thị
+    display.innerText = soundNames[key];
+    
+    // Hiệu ứng nháy màu cam cho nút
+    const pad = audio.parentElement;
+    pad.style.backgroundColor = "orange";
+    setTimeout(() => pad.style.backgroundColor = "", 100);
+  }
+});
