@@ -1,0 +1,129 @@
+const generateElement = () => {
+    return Math.floor(Math.random() * 100) + 1;
+};
+
+const generateArray = () => {
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+        arr.push(generateElement());
+    }
+    return arr;
+};
+
+const generateContainer = () => {
+    return document.createElement('div');
+};
+
+const fillArrContainer = (element, arr) => {
+    element.innerHTML = '';
+    for (let i = 0; i < arr.length; i++) {
+        const span = document.createElement('span');
+        span.textContent = arr[i];
+        element.appendChild(span);
+    }
+};
+
+const isOrdered = (a, b) => {
+    return a <= b;
+};
+
+const swapElements = (arr, index) => {
+    if (!isOrdered(arr[index], arr[index + 1])) {
+        const temp = arr[index];
+        arr[index] = arr[index + 1];
+        arr[index + 1] = temp;
+    }
+};
+
+const highlightCurrentEls = (element, index) => {
+    const spans = element.querySelectorAll('span');
+    if (spans[index]) {
+        spans[index].style.border = '2px dashed red';
+    }
+    if (spans[index + 1]) {
+        spans[index + 1].style.border = '2px dashed red';
+    }
+};
+
+let currentArray = [];
+
+document.getElementById('generate-btn').addEventListener('click', () => {
+    const arrayContainer = document.getElementById('array-container');
+    const startingArrayEl = document.getElementById('starting-array');
+
+    const children = Array.from(arrayContainer.children);
+    for (let child of children) {
+        if (child.id !== 'starting-array') {
+            child.remove();
+        }
+    }
+
+    currentArray = generateArray();
+    fillArrContainer(startingArrayEl, currentArray);
+});
+
+document.getElementById('sort-btn').addEventListener('click', () => {
+    const arrayContainer = document.getElementById('array-container');
+    const startingArrayEl = document.getElementById('starting-array');
+
+    if (currentArray.length === 0) return;
+
+    let arr = [...currentArray];
+    let swapped;
+
+    highlightCurrentEls(startingArrayEl, 0);
+
+    do {
+        swapped = false;
+        for (let j = 0; j < arr.length - 1; j++) {
+            
+            if (!isOrdered(arr[j], arr[j + 1])) {
+                swapped = true;
+            }
+            
+            swapElements(arr, j);
+
+            const newDiv = generateContainer();
+            fillArrContainer(newDiv, arr);
+
+            if (j + 1 < arr.length - 1) {
+                highlightCurrentEls(newDiv, j + 1);
+            } else if (swapped) {
+                highlightCurrentEls(newDiv, 0);
+            }
+
+            arrayContainer.appendChild(newDiv);
+        }
+    } while (swapped);
+});
+
+
+
+                            <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sorting Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main>
+        <div id="array-container">
+            <div id="starting-array"></div>
+        </div>
+        <div id="btn-container">
+            <button id="generate-btn" type="button">Generate Array</button>
+            <button id="sort-btn" type="button">Sort Array</button>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+                            
+                            
