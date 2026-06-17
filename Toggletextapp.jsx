@@ -14,23 +14,34 @@ export const ToggleApp = () => {
     </div>
   );
 };
-
-const { useState } = React;
-
-export const ToggleApp = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const handleToggleVisibility = () => {
-    setIsVisible(!isVisible);
-  }
-
-  return (
-    <div id="toggle-container">
-      <button onClick={handleToggleVisibility} id="toggle-button">Message</button>
-      {isVisible && <p id="message">I love freeCodeCamp!</p>}
-    </div>
-  );
-};
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Toggle Visibility</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.5/babel.min.js"></script>
+  <script 
+    data-plugins="transform-modules-umd"
+    type="text/babel"
+    src="index.jsx"
+  ></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="root"></div>
+  <script
+    data-plugins="transform-modules-umd"
+    type="text/babel"
+    data-presets="react"
+    data-type="module"
+  >
+    import { ToggleApp } from "./index.jsx";
+    ReactDOM.createRoot(document.getElementById("root")).render(<ToggleApp />);
+  </script>
+</body>
+</html>
 
 body {
   font-family: Arial, sans-serif;
