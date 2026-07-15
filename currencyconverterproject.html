@@ -1,0 +1,213 @@
+const { useState, useMemo } = React;
+
+
+const exchangeRates = {
+    USD: 1,
+    EUR: 0.88,
+    GBP: 0.75,
+    JPY: 162,
+    VND: 26080
+};
+
+// Test 1: Xuất Component bằng Named Export (Đúng tên CurrencyConverter)
+export function CurrencyConverter() {
+    // Khởi tạo state để lưu số tiền nhập vào. Giá trị mặc định để là 1.
+    const [amount, setAmount] = useState(1);
+    const [fromCurrency, setFromCurrency] = useState('USD')
+    const[toCurrency, setToCurrency] = useState('EUR')
+
+    const convertedRates = useMemo(() => {
+        const rates = {};
+        // Bước 1: Quy đổi số tiền gốc về chuẩn USD
+        const amountInUSD = amount / exchangeRates[fromCurrency];
+        
+        // Bước 2: Từ chuẩn USD, tính ra số tiền của tất cả các đồng khác
+        for (const currency in exchangeRates) {
+            rates[currency] = amountInUSD * exchangeRates[currency];
+        }
+        
+        return rates; 
+        // Kết quả trả về là 1 object ví dụ: { USD: 10, EUR: 9.2, GBP: 7.8, JPY: 1567 }
+        
+    }, [amount, fromCurrency]);
+const finalAmount = convertedRates[toCurrency];
+    return (
+        <div className="converter-container">
+            <h2>Currency Converter</h2>
+            
+            {/* Test 2: Thẻ input nhận dữ liệu kiểu số */}
+            <input 
+                type="number" 
+                value={amount} 
+                onChange={(e) => setAmount(Number(e.target.value))} 
+            />
+            <select value={fromCurrency} onChange={(e) => setFromCurrency
+            (e.target.value)}>
+            <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+                <option value="VND">VND</option>
+            </select>
+            <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}>
+            <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+                <option value="VND">VND</option>
+            </select>
+            <div className="result-display">
+                <p>
+                    {/* Ép làm tròn 2 số thập phân và in ra mã tiền tệ */}
+                    {finalAmount.toFixed(2)} {toCurrency}
+                </p>
+            </div>
+        </div>
+    );
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Currency Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.5/babel.min.js"></script>
+    <script
+      data-plugins="transform-modules-umd"
+      type="text/babel"
+      src="index.jsx"
+    ></script>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div id="root"></div>
+    <script
+      data-plugins="transform-modules-umd"
+      type="text/babel"
+      data-presets="react"
+      data-type="module"
+    >
+      import { CurrencyConverter } from './index.jsx';
+      ReactDOM.createRoot(document.getElementById('root')).render(<CurrencyConverter />);
+    </script>
+</body>
+
+</html>
+/* Thiết lập các biến màu sắc và thông số dùng chung để dễ quản lý */
+:root {
+  --bg-color: #0f172a; /* Màu nền tối sâu thẳm, dịu mắt */
+  --card-bg: rgba(255, 255, 255, 0.03); /* Nền thẻ hơi trong suốt */
+  --text-main: #f8fafc; /* Chữ màu trắng sáng */
+  --text-muted: #94a3b8; /* Chữ phụ màu xám nhạt */
+  --accent-color: #38bdf8; /* Màu xanh neon làm điểm nhấn */
+  --border-radius: 20px; /* Bo góc mềm mại, rộng rãi */
+}
+
+/* Căn chỉnh toàn bộ trang web và áp dụng Box Model chuẩn */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  
+  /* Flexbox để căn giữa thẻ chuyển đổi ngay giữa màn hình */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  
+  /* Tạo thêm một chút họa tiết nền mờ ảo */
+  background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 70%);
+}
+
+/* Thẻ chứa toàn bộ ứng dụng (Phong cách Glassmorphism) */
+.converter-container {
+  background: var(--card-bg);
+  /* Hiệu ứng kính mờ (cực kỳ hiện đại hiện nay) */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  
+  /* Khung viền mỏng nhẹ, bắt sáng */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius);
+  padding: 40px; /* Không gian bên trong rộng rãi, thoải mái */
+  
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  
+  /* Chuyển động mượt mà khi hover */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.converter-container:hover {
+  transform: translateY(-5px); /* Nổi lên nhẹ khi trỏ chuột vào */
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+}
+
+.converter-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-main);
+}
+
+/* Định dạng các ô nhập liệu và hộp chọn (Input & Select) */
+input[type="number"], select {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  outline: none;
+  
+  /* Hiệu ứng mượt mà khi tương tác */
+  transition: all 0.2s ease;
+}
+
+/* Đổi màu viền thành xanh neon khi người dùng bấm vào ô nhập liệu */
+input[type="number"]:focus, select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+/* Chữ "to" ở giữa 2 ô chọn tiền tệ */
+span {
+  display: block;
+  text-align: center;
+  margin: 10px 0 20px 0;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+}
+
+/* Khu vực hiển thị kết quả cuối cùng */
+.result-display {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.result-display p {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent-color); /* Nổi bật kết quả bằng màu xanh neon */
+  margin: 0;
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.4); /* Phát sáng nhẹ */
+}
