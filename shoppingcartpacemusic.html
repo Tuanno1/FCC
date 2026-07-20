@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎵 Music Store - Shopping Cart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom hover effects và transition mượt mà */
+    .card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+    }
+    .remove-btn {
+      transition: all 0.15s ease;
+    }
+    .remove-btn:active {
+      transform: scale(0.94);
+    }
+    .checkout-btn {
+      transition: all 0.2s ease;
+    }
+    .checkout-btn:active {
+      transform: scale(0.96);
+    }
+    /* Scroll mượt cho phần sản phẩm */
+    #products-container {
+      max-height: 560px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    #products-container::-webkit-scrollbar {
+      width: 4px;
+    }
+    #products-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 8px;
+    }
+    #products-container::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen p-4 md:p-6 font-sans antialiased">
+
+  <!-- ============================================ -->
+  <!-- CONTAINER CHÍNH: FLEX COLUMN (MOBILE) / ROW (LARGE) -->
+  <!-- ============================================ -->
+  <div 
+    id="shopping-cart-container" 
+    class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-8 bg-white/70 backdrop-blur-sm p-5 md:p-8 rounded-3xl shadow-2xl border border-white/50"
+  >
+    
+    <!-- ========================================== -->
+    <!-- PHẦN SẢN PHẨM (BÊN TRÁI) -->
+    <!-- ========================================== -->
+    <div id="products-container" class="flex-1 space-y-4 pr-1">
+      
+      <!-- TIÊU ĐỀ DANH SÁCH SẢN PHẨM -->
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+          <span class="text-3xl">🎸</span> Your Cart
+        </h2>
+        <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full">3 items</span>
+      </div>
+
+      <!-- === CARD SẢN PHẨM 1 === -->
+      <div class="card bg-white rounded-2xl p-5 shadow-md border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div class="flex-1">
+            <h2 class="text-xl font-semibold text-slate-800">The Dark Side of the Moon</h2>
+            <p class="text-sm text-slate-500 mt-0.5">Pink Floyd · 1973</p>
+            <div class="flex flex-wrap items-center gap-4 mt-2">
+              <span class="quantity text-sm font-medium bg-slate-100 px-3 py-1 rounded-full text-slate-700">
+                🛒 Quantity: 2
+              </span>
+              <span class="price text-lg font-bold text-emerald-600">$39.98</span>
+            </div>
+          </div>
+          <button 
+            class="remove-button remove-btn bg-rose-500 hover:bg-rose-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all"
+          >
+            ✕ Remove
+          </button>
+        </div>
+      </div>
+
+      <!-- === CARD SẢN PHẨM 2 === -->
+      <div class="card bg-white rounded-2xl p-5 shadow-md border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div class="flex-1">
+            <h2 class="text-xl font-semibold text-slate-800">Back in Black</h2>
+            <p class="text-sm text-slate-500 mt-0.5">AC/DC · 1980</p>
+            <div class="flex flex-wrap items-center gap-4 mt-2">
+              <span class="quantity text-sm font-medium bg-slate-100 px-3 py-1 rounded-full text-slate-700">
+                🛒 Quantity: 1
+              </span>
+              <span class="price text-lg font-bold text-emerald-600">$24.99</span>
+            </div>
+          </div>
+          <button 
+            class="remove-button remove-btn bg-rose-500 hover:bg-rose-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all"
+          >
+            ✕ Remove
+          </button>
+        </div>
+      </div>
+
+      <!-- === CARD SẢN PHẨM 3 === -->
+      <div class="card bg-white rounded-2xl p-5 shadow-md border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div class="flex-1">
+            <h2 class="text-xl font-semibold text-slate-800">Thriller</h2>
+            <p class="text-sm text-slate-500 mt-0.5">Michael Jackson · 1982</p>
+            <div class="flex flex-wrap items-center gap-4 mt-2">
+              <span class="quantity text-sm font-medium bg-slate-100 px-3 py-1 rounded-full text-slate-700">
+                🛒 Quantity: 3
+              </span>
+              <span class="price text-lg font-bold text-emerald-600">$44.97</span>
+            </div>
+          </div>
+          <button 
+            class="remove-button remove-btn bg-rose-500 hover:bg-rose-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all"
+          >
+            ✕ Remove
+          </button>
+        </div>
+      </div>
+
+      <!-- Thông báo khi giỏ hàng trống (ẩn) -->
+      <div class="text-center py-8 text-slate-400 hidden">
+        <p class="text-lg">🛒 Your cart is empty</p>
+        <p class="text-sm">Start adding some music!</p>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PHẦN ORDER SUMMARY (BÊN PHẢI) -->
+    <!-- ========================================== -->
+    <div 
+      id="order-summary-container" 
+      class="w-full lg:w-80 xl:w-96 bg-slate-50/80 backdrop-blur-sm rounded-2xl border-2 border-slate-200/60 p-6 h-fit shadow-lg sticky top-6"
+    >
+      <h2 class="text-2xl font-bold text-slate-800 border-b border-slate-200/80 pb-4 mb-5 flex items-center gap-2">
+        <span>📋</span> Order Summary
+      </h2>
+
+      <!-- Dòng Total -->
+      <div class="flex items-center justify-between py-3">
+        <p id="total" class="text-lg font-bold text-slate-700">Total:</p>
+        <span id="total-amount" class="text-2xl font-extrabold text-indigo-600 tracking-tight">
+          $109.94
+        </span>
+      </div>
+
+      <!-- Phần tách biệt -->
+      <div class="border-t border-slate-200/80 my-4"></div>
+
+      <!-- Nút Checkout -->
+      <a 
+        href="#" 
+        class="checkout-btn block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 text-lg"
+      >
+        🎯 Checkout
+      </a>
+
+      <!-- Chú thích nhỏ -->
+      <p class="text-xs text-slate-400 text-center mt-4">
+        Secure checkout · Free shipping
+      </p>
+    </div>
+
+  </div>
+
+</body>
+</html>
